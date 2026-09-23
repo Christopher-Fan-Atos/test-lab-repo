@@ -1,3 +1,5 @@
+# Lints workflow YAML on every PR; intentionally has no AWS credentials
+# or deploy steps, so it can never trigger a deployment.
 name: PR Validation
 
 on:
