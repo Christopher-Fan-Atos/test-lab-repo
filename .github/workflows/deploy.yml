@@ -24,6 +24,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Pull, tag, and push image
+        id: image
         env:
           REGISTRY: ${{ steps.ecr-login.outputs.registry }}
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
@@ -32,3 +33,30 @@ jobs:
           docker pull nginxdemos/hello:plain-text
           docker tag nginxdemos/hello:plain-text "$REGISTRY/$REPOSITORY:$IMAGE_TAG"
           docker push "$REGISTRY/$REPOSITORY:$IMAGE_TAG"
+          echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Download current ECS task definition
+        run: |
+          TASK_DEF_ARN=$(aws ecs describe-services \
+            --cluster ${{ vars.ECS_CLUSTER }} \
+            --services ${{ vars.ECS_SERVICE }} \
+            --query 'services[0].taskDefinition' --output text)
+          aws ecs describe-task-definition \
+            --task-definition "$TASK_DEF_ARN" \
+            --query 'taskDefinition' > task-definition.json
+
+      - name: Update image in task definition
+        id: render
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: app
+          image: ${{ steps.image.outputs.image }}
+
+      - name: Deploy new task definition to ECS and wait for stability
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render.outputs.task-definition }}
+          service: ${{ vars.ECS_SERVICE }}
+          cluster: ${{ vars.ECS_CLUSTER }}
+          wait-for-service-stability: true
