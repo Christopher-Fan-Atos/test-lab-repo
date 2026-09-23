@@ -102,6 +102,8 @@ Endpoint shows the new version
 
 **Gap to close before Wednesday:** `container_image_tag`'s default in [variables.tf](variables.tf) is currently a hardcoded `:v1`. A pipeline needs to pass a new tag on every run rather than editing the file by hand each time.
 
+**Day 3 update:** the pipeline above is now live. [.github/workflows/deploy.yml](.github/workflows/deploy.yml) runs on every push to `develop`, pulls `nginxdemos/hello:plain-text`, tags it with the commit SHA, pushes to ECR, registers a new task definition revision, and deploys it to the ECS service — waiting for the rollout to stabilize before finishing. [.github/workflows/pr-check.yml](.github/workflows/pr-check.yml) validates workflow files on every pull request and never deploys.
+
 ## Troubleshooting
 
 - **Endpoint returns a 5xx**: check the target group's health status (Console → Target Groups), the ECS service's Events tab, and the CloudWatch Logs group above for application errors.
