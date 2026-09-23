@@ -36,8 +36,8 @@ Before leaving, know each of these:
 5. **Your public endpoint** — http://tf-example-cfan-alb-1945165384.us-west-2.elb.amazonaws.com/
    The ALB's DNS name — a true URI with a scheme, meant to be opened in a browser or hit with `curl` (unlike #1, which is a registry address, not a browsable URI).
 
-6. **Where the Terraform code lives** — `C:\Users\a958693\Documents\Workshops\Terraform\`
-   Specifically [providers.tf](providers.tf), [variables.tf](variables.tf), [networking.tf](networking.tf), [registry.tf](registry.tf), [compute.tf](compute.tf), [load_balancer.tf](load_balancer.tf), [outputs.tf](outputs.tf). This directory is not a git repository, so there's no remote URL to hand off — just this local path.
+6. **Where the Terraform code lives** — `C:\Users\a958693\Documents\Workshops\Terraform\`, pushed to [Christopher-Fan-Atos/test-lab-repo](https://github.com/Christopher-Fan-Atos/test-lab-repo)
+   Specifically [providers.tf](providers.tf), [variables.tf](variables.tf), [networking.tf](networking.tf), [registry.tf](registry.tf), [compute.tf](compute.tf), [load_balancer.tf](load_balancer.tf), [outputs.tf](outputs.tf).
 
 ## Architecture
 
@@ -113,4 +113,3 @@ Endpoint shows the new version
 - `aws_lb` / `aws_lb_target_group` names are capped at 32 characters by AWS — see `local.short_name_prefix` in [load_balancer.tf](load_balancer.tf).
 - EC2 `user_data` only runs on first boot — irrelevant now (migrated to ECS Fargate in Part 6), but the same idea applies to task definitions: changing the image requires a new task definition revision + service deployment, not just an in-place edit.
 - Replacing an `aws_lb_target_group` that's still referenced by a listener fails outright unless `create_before_destroy` is set (see the `lifecycle` block on `aws_lb_target_group.app`).
-# test-lab-repo

@@ -201,7 +201,7 @@ topic) if real alerting is wanted later.
 |---|---|
 | AWS Account | `685306736016` |
 | AWS Region | `us-west-2` |
-| GitHub Repository | *not yet initialized — this directory isn't a git repo; to be set up before Day 3* |
+| GitHub Repository | [Christopher-Fan-Atos/test-lab-repo](https://github.com/Christopher-Fan-Atos/test-lab-repo) |
 | ECR Repository | `685306736016.dkr.ecr.us-west-2.amazonaws.com/terraform-example-christopher-fan-app` |
 | ECS Cluster | `terraform-example-Christopher-Fan-cluster` |
 | ECS Service | `terraform-example-Christopher-Fan-service` |
@@ -209,10 +209,11 @@ topic) if real alerting is wanted later.
 | CloudWatch Log Group | `/ecs/terraform-example-Christopher-Fan-app` |
 | ALB URL | `http://tf-example-cfan-alb-1945165384.us-west-2.elb.amazonaws.com` |
 
-**Open item before Day 3:** GitHub Actions will need AWS credentials to push
-to ECR and update ECS. Decide between an IAM user with access keys stored as
-repo secrets, or OIDC federation (no long-lived keys, generally the better
-practice) — set this up alongside initializing the repo.
+**Open item before Day 3:** repo is initialized and pushed. GitHub Actions
+will still need AWS credentials to push to ECR and update ECS. Decide between
+an IAM user with access keys stored as repo secrets, or OIDC federation (no
+long-lived keys, generally the better practice) — that setup is still
+pending.
 
 ## Part 7 — Day 4 Readiness Check
 
@@ -248,7 +249,7 @@ All items verified live against AWS, not just assumed from Terraform state.
 - ✅ CloudWatch logs reviewed
 - ✅ CloudWatch alarm created
 - ✅ Deployment information recorded
-- ✅ Environment ready for Day 3 CI/CD (pending: git repo init + AWS auth method for Actions)
+- ✅ Environment ready for Day 3 CI/CD (repo initialized; pending: AWS auth method for Actions)
 - ✅ Environment ready for Day 4 Integration & Debugging
 
 ## Files added/changed today
